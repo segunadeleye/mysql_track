@@ -1,16 +1,16 @@
-CREATE TABLE `Tastes` (
+CREATE TABLE Tastes (
   name VARCHAR(10) NOT NULL,
   filling VARCHAR(10) NOT NULL
 );
 
-CREATE TABLE `Sandwiches` (
+CREATE TABLE Sandwiches (
   location VARCHAR(20) NOT NULL,
   bread VARCHAR(10) NOT NULL,
   filling VARCHAR(10) NOT NULL,
   price FLOAT NOT NULL
 );
 
-CREATE TABLE `Locations` (
+CREATE TABLE Locations (
   lname VARCHAR(20) NOT NULL,
   phone CHAR(10) NOT NULL,
   address VARCHAR(20) NOT NULL
@@ -44,13 +44,16 @@ INSERT INTO Locations VALUES
   ('Buttery', '702 3421', 'College St');
 
 SELECT location
-FROM restored.Sandwiches
+FROM Sandwiches
 WHERE filling IN(
   SELECT filling
-  FROM restored.Tastes
+  FROM Tastes
   WHERE name = 'Jones'
 );
 
-SELECT @jones_filling := filling FROM Tastes WHERE name = 'Jones';
+SELECT location
+FROM Sandwiches
+NATURAL JOIN Tastes
+WHERE name = 'Jones';
 
-SELECT location FROM Sandwiches where filling = @jones_filling;
+SELECT location FROM Sandwiches NATURAL JOIN Tastes WHERE 
