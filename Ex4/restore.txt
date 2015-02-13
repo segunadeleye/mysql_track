@@ -1,9 +1,7 @@
-mysqldump -p -u oluwasegun track_new Locations Sandwiches Tastes testing_table
+mysqldump -p -u oluwasegun track_new Locations Sandwiches Tastes testing_table > backup.sql
 
 mysql -u oluwasegun -p
 
 CREATE DATABASE restored;
-
-exit
 
 mysql -p -u oluwasegun restored < exercise_4.sql
