@@ -45,7 +45,7 @@ INSERT INTO Locations VALUES
 
 SELECT location
 FROM Sandwiches
-WHERE filling IN(
+WHERE filling = (
   SELECT filling
   FROM Tastes
   WHERE name = 'Jones'
@@ -56,4 +56,7 @@ FROM Sandwiches
 NATURAL JOIN Tastes
 WHERE name = 'Jones';
 
-SELECT location FROM Sandwiches NATURAL JOIN Tastes WHERE 
+SELECT location, COUNT(distinct name)
+FROM Tastes
+NATURAL JOIN Sandwiches
+GROUP BY location;
