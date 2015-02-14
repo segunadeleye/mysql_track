@@ -78,6 +78,14 @@ LEFT JOIN Users
 ON Articles.user_id = Users.id
 WHERE name = 'user3';
 
+SELECT id, title, body
+FROM Articles
+WHERE user_id = (
+  SELECT id
+  FROM Users
+  WHERE name = 'user3'
+);
+
 -- 1b --
 SELECT @user_id := id FROM Users WHERE name = 'user3';
 SELECT title, body FROM Articles WHERE user_id = @user_id;
@@ -131,6 +139,7 @@ HAVING `Number of Comments` = (
 
 -- 5 --
 SELECT title, COUNT(comment) as 'Number of Comments'
-FROM Articles INNER JOIN Comments ON Articles.id = Comments.article_id
+FROM Articles
+INNER JOIN Comments ON Articles.id = Comments.article_id
 GROUP BY title
 HAVING `Number of Comments` <= 1;
