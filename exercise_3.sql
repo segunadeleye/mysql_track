@@ -124,7 +124,7 @@ WHERE id not IN (
 );
 
 -- 4 --
-SELECT title, COUNT(comment) as 'Number of Comments'
+SELECT title, COUNT(comment) AS `Number of Comments`
 FROM Articles INNER JOIN Comments ON Articles.id = Comments.article_id
 GROUP BY title
 HAVING `Number of Comments` = (
@@ -138,7 +138,7 @@ HAVING `Number of Comments` = (
 );
 
 -- 5 --
-SELECT title, COUNT(comment) as 'Number of Comments'
+SELECT title, COUNT(comment) AS 'Number of Comments'
 FROM Articles
 INNER JOIN Comments ON Articles.id = Comments.article_id
 GROUP BY title
