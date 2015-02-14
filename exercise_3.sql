@@ -128,13 +128,13 @@ SELECT title, COUNT(comment) as 'Number of Comments'
 FROM Articles INNER JOIN Comments ON Articles.id = Comments.article_id
 GROUP BY title
 HAVING `Number of Comments` = (
-  SELECT MAX(count)
+  SELECT MAX(`Number of Comments`)
   FROM (
-    SELECT title, COUNT(comment) AS count
+    SELECT COUNT(comment) AS `Number of Comments`
     FROM Articles
     INNER JOIN Comments ON Comments.article_id = Articles.id
     GROUP BY title
-  ) AS Count
+  ) AS Comment_Count
 );
 
 -- 5 --
