@@ -74,7 +74,7 @@ INSERT INTO Comments (comment, user_id, article_id) VALUES
 -- 1a --
 SELECT title, body
 FROM Articles
-LEFT JOIN Users
+INNER JOIN Users
 ON Articles.user_id = Users.id
 WHERE name = 'user3';
 
