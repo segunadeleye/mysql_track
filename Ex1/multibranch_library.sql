@@ -9,14 +9,16 @@ CREATE TABLE Titles (
   title VARCHAR(20) NOT NULL,
   author VARCHAR(20) NOT NULL,
   publisher VARCHAR(20) NOT NULL,
-  PRIMARY KEY(title)
+  PRIMARY KEY(title),
+  INDEX publisher_key (publisher),
+  INDEX author_key (author)
 );
 
 CREATE TABLE Holdings (
   branch BINARY(4) NOT NULL,
   title VARCHAR(20) NOT NULL,
   copies INT(1),
-  INDEX(branch, title)
+  INDEX branch_key (branch)
 );
 
 INSERT INTO Branches VALUES
