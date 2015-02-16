@@ -1,13 +1,15 @@
 CREATE TABLE Tastes (
   name VARCHAR(10) NOT NULL,
-  filling VARCHAR(10) NOT NULL
+  filling VARCHAR(10) NOT NULL,
+  INDEX (name)
 );
 
 CREATE TABLE Sandwiches (
   location VARCHAR(20) NOT NULL,
   bread VARCHAR(10) NOT NULL,
   filling VARCHAR(10) NOT NULL,
-  price FLOAT NOT NULL
+  price FLOAT NOT NULL,
+  INDEX (filling)
 );
 
 CREATE TABLE Locations (
