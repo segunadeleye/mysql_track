@@ -1,7 +1,8 @@
-CREATE TABLE Users (
+CREATE TABLE User (
   id int NOT NULL AUTO_INCREMENT PRIMARY KEY,
   name VARCHAR(40) NOT NULL,
-  type ENUM('admin', 'normal') NOT NULL DEFAULT 'normal';
+  type ENUM('admin', 'normal') NOT NULL DEFAULT 'normal',
+  INDEX name_key (name)
 );
 
 CREATE TABLE Categories (
@@ -12,16 +13,19 @@ CREATE TABLE Categories (
 CREATE TABLE Articles (
   id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
   title VARCHAR(50) NOT NULL,
-  body TEXT NOT NULL
+  body TEXT NOT NULL,
   user_id INT NOT NULL,
-  category_id INT NOT NULL
+  category_id INT NOT NULL,
+  INDEX user_id_key (user_id)
 );
 
 CREATE TABLE Comments (
   id int NOT NULL AUTO_INCREMENT PRIMARY KEY,
   comment VARCHAR(40) NOT NULL,
   user_id INT NOT NULL,
-  article_id INT NOT NULL
+  article_id INT NOT NULL.
+  INDEX user_id_key (user_id),
+  INDEX article_id_key (article_id)
 );
 
 INSERT INTO Users (name) VALUES ('user1'), ('user2'), ('user3'), ('user4'), ('user5');
