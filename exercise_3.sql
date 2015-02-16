@@ -118,14 +118,15 @@ WHERE comment IS NULL;
 -- 3b --
 SELECT title, body
 FROM Articles
-WHERE id not IN (
+WHERE id NOT IN (
   SELECT article_id
   FROM Comments
 );
 
 -- 4 --
 SELECT title, COUNT(comment) AS `Number of Comments`
-FROM Articles INNER JOIN Comments ON Articles.id = Comments.article_id
+FROM Articles
+INNER JOIN Comments ON Articles.id = Comments.article_id
 GROUP BY title
 HAVING `Number of Comments` = (
   SELECT MAX(`Number of Comments`)
