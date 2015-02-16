@@ -1,0 +1,188 @@
+1
+
+id: The SELECT identifier.
+
+The sequential numner of the SELECT within the query.
+The value is null if the row refers to a union result of other rows.
+
+select_type: The SELECT type
+
+The type of SELECT used. The possible values of the select_type are;
+
+SIMPLE:                Simple SELECT (not using UNION or subqueries)
+PRIMARY:               Outermost SELECT
+UNION:                 Second or later SELECT statement in a UNION
+DEPENDENT UNION:       Second or later SELECT statement in a UNION, dependent on outer query
+UNION RESULT:          Result of a UNION.
+SUBQUERY:              First SELECT in subquery
+DEPENDENT SUBQUERY:    First SELECT in subquery, dependent on outer query
+DERIVED:               Derived table SELECT (subquery in FROM clause)
+MATERIALIZED:          Materialized subquery
+UNCACHEABLE SUBQUERY:  A subquery for which the result cannot be cached and must be re-evaluated for each row of the outer query
+UNCACHEABLE UNION:     The second or later select in a UNION that belongs to an uncacheable subquery (see UNCACHEABLE SUBQUERY)
+
+table: The table for the output row
+
+The name of the table to which the row of output refers to. Other possible values are;
+
+<unionM,N>: The row refers to the union of the rows with id values of M and N.
+<derivedN>: The row refers to the derived table result for the row with an id value of N.
+<subqueryN>: The row refers to the result of a materialized subquery for the row with an id value of N.
+
+type: The join type
+
+The possible values are;
+
+system   	    : The table has only one row.
+const    	    : The table has at most one matchin row which is read at the start of the query.
+eq_ref   	    : One row is read from this table for each combination of rows from the previous tables. It is used when all parts of an index are used by the join and the index is a PRIMARY KEY or UNIQUE NOT NULL index.
+ref      	    : All rows with matching index are read from this table for each combination of the rows from the previous tables. ref is used if the join uses only a leftmost prefix of the key or if the key is not a PRIMARY KEY or UNIQUE index.
+fulltext 	    : The join is perfotmed using a FULLTEXT index.
+ref_or_null     : It is just like ref but MySQL does an extra search for rows that contain NULL values.
+index_merge     : Index Merge Optimisation is used. The key column in the output row contains a list of indexes used, and the key_len contains a list of the lingest key partd for the indexes used.
+unique_subquery : This join type replaces ref for some IN subqueries. It is an index lookup function that replaces the sunquery completely for better efficiency.
+index_subquery  : Only rows that are given in a given range are retrieved.
+index           : This means the index tree is scanned for the row output.
+ALL             : This means a full table scan is done for each combination of rowa from the previous tables.
+
+possible_keys: The possible indexes (or keys) that MySQL could choose to use to find the rows in the table. The value is NULL if there are no suitable values to use. Note however, that MySQL can choose to use a key that is not listed in the possible_keys column.
+
+key: The index actually chosen This is the key that MySQL has chosen to use. This could be one of the keys listed in the possible_keys column.
+However, if none possible_keys indexes are not suitable for looking up rows, MySQL could choose to use another key.
+
+key_len: This is the length of the chosen key.
+
+ref: It shows which columns or constants are compared to the index used for the lookup.
+
+rows: The number of estimated rows that must be examined to execute the query.
+
+Extra: This column is for additional information about the query execution. The possible values are;
+
+- Child of 'table' pushed join@1
+- const row not found
+- Deleting all rows
+- Distinct
+- FirstMatch(tbl_name)
+- Full scan on NULL key
+- Impossible HAVING
+- Impossible WHERE
+- Impossible WHERE noticed after reading const tables
+- LooseScan(m..n)
+- Materialize, Scan
+- No matching min/max row
+- no matching row in const table
+- No matching rows after partition pruning
+- No tables used
+- Not exists
+- Range checked for each record (index map: N)
+- Scanned N databases
+- Select tables optimized away
+- Skip_open_table, Open_frm_only, Open_trigger_only, Open_full_table
+- Start materialize, End materialize, Scan
+- Start temporary, End temporary
+- unique row not found
+- Using filesort
+- Using index
+- Using index condition
+- Using index for group-by
+- Using join buffer (Block Nested Loop), Using join buffer (Batched Key Access)
+- Using MRR
+- Using sort_union(...), Using union(...), Using intersect(...)
+- Using temporary
+- Using where
+- Using where with pushed condition
+
+
+2.1
+
+The value of rows in the Explain table is equal to the number of rows in the table. This means a full table scan was done. In other words, all the rows in the table were scanned.
+
+2.2
+
+No. This can be optimised by adding an index key to the user_id column in the Comments table.
+
+
+3.1
+
+I will add a primary key to the id column and add an index key to the remaining columns.
+
+The MySQL queries will be;
+
+ALTER TABLE comments ADD PRIMARY KEY(id);
+
+ALTER TABLE comments ADD INDEX(user id, commetable_type, commentable_id);
+
+
+
+4.1
+
+EXPLAIN SELECT title, body FROM Articles INNER JOIN Users ON Articles.user_id = Users.id WHERE name = 'user3';
+
++----+-------------+----------+------+---------------+---------+---------+---------------+------+--------------------------+
+| id | select_type | table    | type | possible_keys | key     | key_len | ref           | rows | Extra                    |
++----+-------------+----------+------+---------------+---------+---------+---------------+------+--------------------------+
+|  1 | SIMPLE      | Users    | ref  | PRIMARY,name  | name    | 42      | const         |    1 | Using where; Using index |
+|  1 | SIMPLE      | Articles | ref  | user_id       | user_id | 4       | blog.Users.id |    2 | NULL                     |
++----+-------------+----------+------+---------------+---------+---------+---------------+------+--------------------------+
+
+id: There are two rows but they have the same sequential value.
+
+select_type: A simple SELECT query was used. In other words, there are no subqueries.
+
+table: The rows output were got from the Users and Articles tables.
+
+type: The key used for each table is not a primary key or a unique key.
+
+possible_keys: A primary key and name index key are available for the Users table. user_id index key is available for the Articles table.
+
+key: The name index key was used for Users table. The user_id index key was used for Articles table.
+
+key_len: The length of the name key is 42. The length of the user_id key is 4.
+
+rows: 1 row will be scanned from the Users table. 2 rows will be scanned from the Articles table. A total of (1 X 2 = 2) rows will be scanned. 
+
+ref: a constant was compared to the name key to select rows from the Users table. The id column in the Users table was compared to the user_id key to select rows from the Articles table;
+
+Extra: The column information is retrieved from the Users table using information from the index tree to perform lookups of key values.
+
+4.2
+
+EXPLAIN SELECT id, title, body FROM Articles WHERE user_id = (SELECT id   FROM Users   WHERE name = 'user3');
+
++----+-------------+----------+------+---------------+---------+---------+-------+------+--------------------------+
+| id | select_type | table    | type | possible_keys | key     | key_len | ref   | rows | Extra                    |
++----+-------------+----------+------+---------------+---------+---------+-------+------+--------------------------+
+|  1 | PRIMARY     | Articles | ref  | user_id       | user_id | 4       | const |    3 | Using where              |
+|  2 | SUBQUERY    | Users    | ref  | name          | name    | 42      | const |    1 | Using where; Using index |
++----+-------------+----------+------+---------------+---------+---------+-------+------+--------------------------+
+
+id: There are two rows with different sequential value.
+
+select_type: An outermost SELECT was used for the Articles table. A SELECT in subquery was used for the Users table.
+
+table: The rows output were got from the Users and Articles tables.
+
+type: The key used for each table is not a primary key or a unique key.
+
+possible_keys: user_id index key is available for the Articles table. name index key is available for the Users table.
+
+key: The user_id index key was used for Articles table.The name index key was used for Users table.
+
+key_len: The length of the user_id key is 4. The length of the name key is 42.
+
+rows: 3 rows will be scanned from the Articles table. 1 row will be scanned from the Users table. A total pf (3 X 1 = 3) rows will be scanned.
+
+ref: A constant was compared to the user_id key to select rows from the Articles table. A constant was compared to the name key to select rows from the Users table.
+
+Extra: A WHERE clause is used to match which rows to match in the Articles table. The column information is retrieved from the Users table using information from the index tree to perform lookups of key values.
+
+The summary of the performance for both methods is in the table below.
+
++-------------+------------------------------------------------------+---------------------------------------------------+
+| SELECT TYPE | NUMBER OF ROWS SCANNED (without index on Users.name) | NUMBER OF ROWS SCANNED (with index on Users.name) |
++-------------+------------------------------------------------------+-------+------+------------------------------------+
+| INNER JOIN  | 5 X 2 = 10 											 | 1 X 2 = 2                                         |
+| SUBQUERY    | 5 X 3 = 15 											 | 1 X 3 = 3                                         |
++-------------+------------------------------------------------------+---------------------------------------------------+
+
+The INNER JOIN method is a better method because fewer number of rows are scanned, hence it is faster.
