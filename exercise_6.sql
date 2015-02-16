@@ -1,7 +1,8 @@
 CREATE TABLE Emails (
   email VARCHAR(40) NOT NULL,
   phone VARCHAR(10) NOT NULL,
-  city VARCHAR(15) NOT null
+  city VARCHAR(15) NOT NULL,
+  INDEX (city)
 );
 
 LOAD DATA LOCAL INFILE 'email_subscribers.txt'
