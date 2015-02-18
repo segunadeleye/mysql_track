@@ -23,6 +23,17 @@ SELECT city, COUNT(city) AS `Number of Response`
 FROM Subscribers
 GROUP BY city
 HAVING COUNT(city) = (
+  SELECT COUNT(city) AS `Number of Response`
+  FROM Subscribers
+  GROUP BY city
+  ORDER BY `Number of Response` DESC
+  LIMIT 1
+);
+
+SELECT city, COUNT(city) AS `Number of Response`
+FROM Subscribers
+GROUP BY city
+HAVING COUNT(city) = (
   SELECT MAX(`Number of Response`)
   FROM (
     SELECT COUNT(city) AS `Number of Response`
@@ -40,6 +51,23 @@ FROM Subscribers
 GROUP BY `Email Domain`;
 
 --5--
+SELECT email_domain, COUNT(email_domain) AS amount
+FROM (
+  SELECT substring_index(email, '@', -1) AS email_domain
+  FROM Subscribers
+) AS Domains
+GROUP BY email_domain 
+HAVING amount = (
+  SELECT COUNT(email_domain) AS amount
+  FROM (
+    SELECT substring_index(email, '@', -1) AS email_domain
+    FROM Subscribers
+  ) AS Domains
+  GROUP BY email_domain
+  ORDER BY amount DESC
+  LIMIT 1
+);
+
 SELECT email_domain, COUNT(email_domain) AS amount
 FROM (
   SELECT substring_index(email, '@', -1) AS email_domain
