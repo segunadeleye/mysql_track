@@ -32,6 +32,9 @@ HAVING COUNT(city) = (
 );
 
 --4--
+SELECT DISTINCT substring_index(email, '@', -1) AS `Email Domain`
+FROM Subscribers;
+
 SELECT substring_index(email, '@', -1) AS `Email Domain`
 FROM Subscribers
 GROUP BY `Email Domain`;
