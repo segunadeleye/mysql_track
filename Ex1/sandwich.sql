@@ -1,7 +1,8 @@
 CREATE TABLE Tastes (
   name VARCHAR(10) NOT NULL,
   filling VARCHAR(10) NOT NULL,
-  INDEX (name)
+  PRIMARY KEY (name, filling),
+  INDEX (filling)
 );
 
 CREATE TABLE Sandwiches (
@@ -9,13 +10,16 @@ CREATE TABLE Sandwiches (
   bread VARCHAR(10) NOT NULL,
   filling VARCHAR(10) NOT NULL,
   price FLOAT NOT NULL,
+  PRIMARY KEY (location, bread, filling),
   INDEX (filling)
 );
 
 CREATE TABLE Locations (
   lname VARCHAR(20) NOT NULL,
   phone CHAR(10) NOT NULL,
-  address VARCHAR(20) NOT NULL
+  address VARCHAR(20) NOT NULL,
+  PRIMARY KEY (lname),
+  UNIQUE KEY (phone),
 );
 
 INSERT INTO Tastes VALUES
@@ -45,7 +49,7 @@ INSERT INTO Locations VALUES
   ('Old Nag', '767 8132', 'Dame St'),
   ('Buttery', '702 3421', 'College St');
 
-SELECT location
+explain SELECT location
 FROM Sandwiches
 WHERE filling = (
   SELECT filling
@@ -53,12 +57,12 @@ WHERE filling = (
   WHERE name = 'Jones'
 );
 
-SELECT location
+explain SELECT location
 FROM Sandwiches
 NATURAL JOIN Tastes
 WHERE name = 'Jones';
 
-SELECT location, COUNT(distinct name)
+explain SELECT location, COUNT(DISTINCT name)
 FROM Tastes
 NATURAL JOIN Sandwiches
 GROUP BY location;
