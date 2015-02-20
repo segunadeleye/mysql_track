@@ -62,10 +62,12 @@ WHERE filling = (
 
 SELECT location
 FROM Sandwiches
-NATURAL JOIN Tastes
+INNER JOIN Tastes
+ON Sandwiches.filling = Tastes.filling
 WHERE name = 'Jones';
 
 SELECT location, COUNT(DISTINCT name)
 FROM Tastes
-NATURAL JOIN Sandwiches
+INNER JOIN Sandwiches
+ON Tastes.filling = Sandwiches.filling
 GROUP BY location;
