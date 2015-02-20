@@ -11,6 +11,9 @@ CREATE TABLE Sandwiches (
   filling VARCHAR(10) NOT NULL,
   price FLOAT NOT NULL,
   PRIMARY KEY (location, bread, filling),
+  FOREIGN KEY (location)
+    REFERENCES Locations(lname)
+    ON UPDATE CASCADE ON DELETE CASCADE,
   INDEX (filling)
 );
 
@@ -49,7 +52,7 @@ INSERT INTO Locations VALUES
   ('Old Nag', '767 8132', 'Dame St'),
   ('Buttery', '702 3421', 'College St');
 
-explain SELECT location
+SELECT location
 FROM Sandwiches
 WHERE filling = (
   SELECT filling
@@ -57,12 +60,12 @@ WHERE filling = (
   WHERE name = 'Jones'
 );
 
-explain SELECT location
+SELECT location
 FROM Sandwiches
 NATURAL JOIN Tastes
 WHERE name = 'Jones';
 
-explain SELECT location, COUNT(DISTINCT name)
+SELECT location, COUNT(DISTINCT name)
 FROM Tastes
 NATURAL JOIN Sandwiches
 GROUP BY location;
