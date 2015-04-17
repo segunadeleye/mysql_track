@@ -1,13 +1,13 @@
 CREATE TABLE Branches (
-  bcode BINARY NOT NULL,
+  bcode     VARCHAR(4) NOT NULL,
   librarian VARCHAR(20) NOT NULL,
-  address TEXT NOT NULL,
+  address   TEXT NOT NULL,
   PRIMARY KEY(bcode)
 );
 
 CREATE TABLE Titles (
-  title VARCHAR(20) NOT NULL,
-  author VARCHAR(20) NOT NULL,
+  title     VARCHAR(20) NOT NULL,
+  author    VARCHAR(20) NOT NULL,
   publisher VARCHAR(20) NOT NULL,
   PRIMARY KEY(title),
   INDEX publisher_key (publisher),
@@ -15,8 +15,8 @@ CREATE TABLE Titles (
 );
 
 CREATE TABLE Holdings (
-  branch BINARY(4) NOT NULL,
-  title VARCHAR(20) NOT NULL,
+  branch VARCHAR(4) NOT NULL,
+  title  VARCHAR(20) NOT NULL,
   copies INT(1),
   INDEX branch_key (branch)
 );
