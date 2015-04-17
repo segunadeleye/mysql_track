@@ -4,4 +4,4 @@ mysql -u oluwasegun -p
 
 CREATE DATABASE restored;
 
-mysql -p -u oluwasegun restored < exercise_4.sql
+mysql -p -u oluwasegun restored < backup.sql
