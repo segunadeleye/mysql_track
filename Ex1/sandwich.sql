@@ -1,5 +1,5 @@
 CREATE TABLE Tastes (
-  name VARCHAR(10) NOT NULL,
+  name    VARCHAR(10) NOT NULL,
   filling VARCHAR(10) NOT NULL,
   PRIMARY KEY (name, filling),
   INDEX (filling)
@@ -7,9 +7,9 @@ CREATE TABLE Tastes (
 
 CREATE TABLE Sandwiches (
   location VARCHAR(20) NOT NULL,
-  bread VARCHAR(10) NOT NULL,
-  filling VARCHAR(10) NOT NULL,
-  price FLOAT NOT NULL,
+  bread    VARCHAR(10) NOT NULL,
+  filling  VARCHAR(10) NOT NULL,
+  price    FLOAT NOT NULL,
   PRIMARY KEY (location, bread, filling),
   FOREIGN KEY (location)
     REFERENCES Locations(lname)
@@ -18,8 +18,8 @@ CREATE TABLE Sandwiches (
 );
 
 CREATE TABLE Locations (
-  lname VARCHAR(20) NOT NULL,
-  phone CHAR(10) NOT NULL,
+  lname   VARCHAR(20) NOT NULL,
+  phone   CHAR(10) NOT NULL,
   address VARCHAR(20) NOT NULL,
   PRIMARY KEY (lname),
   UNIQUE KEY (phone),
