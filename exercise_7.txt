@@ -34,7 +34,7 @@ type: The join type
 The possible values are;
 
 system   	    : The table has only one row.
-const    	    : The table has at most one matchin row which is read at the start of the query.
+const    	    : The table has at most one matching row which is read at the start of the query.
 eq_ref   	    : One row is read from this table for each combination of rows from the previous tables. It is used when all parts of an index are used by the join and the index is a PRIMARY KEY or UNIQUE NOT NULL index.
 ref      	    : All rows with matching index are read from this table for each combination of the rows from the previous tables. ref is used if the join uses only a leftmost prefix of the key or if the key is not a PRIMARY KEY or UNIQUE index.
 fulltext 	    : The join is perfotmed using a FULLTEXT index.
